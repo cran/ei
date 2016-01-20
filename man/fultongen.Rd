@@ -1,0 +1,14 @@
+     \name{fultongen}
+     \docType{data}
+     \alias{fultongen}
+     \title{Voter Transitions}
+     \description{
+     	Aggregated data from 289 precincts in Fulton County, Georgia.  The variable \code{t} represents the fraction voting in 1994 and \code{x} the fraction in 1992.  Beta_b is then the fraction who vote in both elections, and Beta_w the fraction of nonvoters in 1992 who vote in the midterm election of 1994.
+     }
+     \usage{fultongen}
+     \format{A data frame containing 289 observations.}
+     \source{Gary King, 1997, "Replication data for: A Solution to the Ecological Inference Problem: Reconstructing Individual Behavior from Aggregate Data", http://hdl.handle.net/1902.1/LWMMKUTYXS UNF:3:DRWozWd89+vNLO7lY2AHbg== IQSS Dataverse Network [Distributor] V3 [Version]}
+     \references{
+     Gary King (1997). \emph{A Solution to the Ecological Inference Problem.}  Princeton: Princeton University Press.  Section 13.1:235-41.
+     }
+     \keyword{datasets}

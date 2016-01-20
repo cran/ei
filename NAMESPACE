@@ -1,0 +1,29 @@
+ export(ei,
+       ei.sim,
+       eiread,
+       bounds1,
+       tomogRxC,
+       tomogRxC3d)
+
+import(mvtnorm)
+import(msm)
+import(tmvtnorm)
+import(ellipse)
+import(MASS)
+import(ucminf)
+import(cubature)
+import(mnormt)
+import(foreach)
+import(eiPack)
+import(rgl)
+import(sp)
+
+importFrom("plotrix","draw.circle")
+
+importFrom("grDevices", "chull", "hcl", "heat.colors", "rainbow", "rgb")
+importFrom("graphics", "abline", "image", "legend", "lines", "mtext", "par", "points", "polygon", "text")
+importFrom("stats", "coef", "cor", "cov", "density", "dnorm", "lm", "na.omit", "pnorm", "quantile", "runif", "sd", "terms.formula", "var", "weighted.mean")
+importFrom("utils", "head")
+
+S3method(plot, ei)
+S3method(summary, ei)
