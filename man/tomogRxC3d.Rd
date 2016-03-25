@@ -37,7 +37,7 @@ Gary King (1997). A Solution to the Ecological Inference Problem.  Princeton: Pr
 }
 
 \author{
-  Gary King <<email: king@harvard.edu>>; Molly Roberts <<email: roberts8@fas.harvard.edu>>; Soledad Prillaman <<email: soledadartiz@fas.harvard.edu..
+  Gary King <<email: king@harvard.edu>>; Molly Roberts <<email: molly.e.roberts@gmail.com>>; Soledad Prillaman <<email: soledadartiz@fas.harvard.edu..
 }
 
 \examples{

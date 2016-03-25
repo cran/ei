@@ -15,7 +15,6 @@ import(cubature)
 import(mnormt)
 import(foreach)
 import(eiPack)
-import(rgl)
 import(sp)
 
 importFrom("plotrix","draw.circle")

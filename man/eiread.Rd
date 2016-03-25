@@ -34,7 +34,7 @@ eiread(ei.object, ...)
 	\item{goodman}{Goodman's Regression.  See Section 3.1}
 }
 \author{
-  Gary King <<email: king@harvard.edu>> and Molly Roberts <<email: roberts8@fas.harvard.edu>>
+  Gary King <<email: king@harvard.edu>> and Molly Roberts <<email: molly.e.roberts@gmail.com>>
 }
 \references{
 Gary King (1997). A Solution to the Ecological Inference Problem.  Princeton: Princeton University Press.

@@ -24,7 +24,7 @@ numbers mean better resolution.}
 Gary King (1997). A Solution to the Ecological Inference Problem.  Princeton: Princeton University Press.
 }
 \author{
-  Gary King <<email: king@harvard.edu>> and Molly Roberts <<email: roberts8@fas.harvard.edu>>
+  Gary King <<email: king@harvard.edu>> and Molly Roberts <<email: molly.e.roberts@gmail.com>>
 }
 
 \examples{

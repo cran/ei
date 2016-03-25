@@ -3,6 +3,11 @@
 tomogRxC3d <- function(formula,data,total=NULL,lci=TRUE,estimates=FALSE,ci=FALSE,level=.95,seed=1234,color=hcl(h=30,c=100,l=60),transparency=.75,light=FALSE,rotate=TRUE){
   ##Run Through RxC Code Once (from Molly's original tomogRxC function)
   #require(grDevices)
+
+  if (!requireNamespace("rgl", quietly = TRUE)) {
+    stop("Package rgl is needed for the tomogRxC3d function to work. Please install it.",
+      call. = FALSE)
+  }
   
   noinfocount <- 0
   form <- formula
@@ -356,13 +361,13 @@ tomogRxC3d <- function(formula,data,total=NULL,lci=TRUE,estimates=FALSE,ci=FALSE
   
   ##Tomography Plot - with/without point estimates
   if(ci==F){
-    plot3d(b,w,h, type="s", col="black", size=0.3, xlim=c(0,1), ylim=c(0,1), zlim=c(0,1), xlab=yl, ylab=xl, zlab=zl)
+    rgl::plot3d(b,w,h, type="s", col="black", size=0.3, xlim=c(0,1), ylim=c(0,1), zlim=c(0,1), xlab=yl, ylab=xl, zlab=zl)
     ##Add the plane for each set of points
     for(i in 1:dim(hstr)[1]){  
       #Two point plane (line)
       if(length(unique(w[i,]))==1 | length(unique(b[i,]))==1 | length(unique(h[i,]))==1){
-        if(lci==T){lines3d(x = b[i,], y = w[i,], z=h[i,], col=hcl(h=30,c=100,l=scale[i],alpha=1))}
-        else{lines3d(x = b[i,], y = w[i,], z=h[i,], col=color)}
+        if(lci==T){rgl::lines3d(x = b[i,], y = w[i,], z=h[i,], col=hcl(h=30,c=100,l=scale[i],alpha=1))}
+        else{rgl::lines3d(x = b[i,], y = w[i,], z=h[i,], col=color)}
       }else{
         #All Others
         fit <- lm(h[i,] ~ b[i,] + w[i,])
@@ -371,26 +376,26 @@ tomogRxC3d <- function(formula,data,total=NULL,lci=TRUE,estimates=FALSE,ci=FALSE
         c <- coefs[3]
         d <- -1
         e <- coefs["(Intercept)"]
-        if(lci==T){planes3d(a, c, d, e, alpha=transparency, col=hcl(h=30,c=100,l=scale[i]), lit=light)}
-        else{planes3d(a, c, d, e, alpha=transparency, col=color, lit=light)}
+        if(lci==T){rgl::planes3d(a, c, d, e, alpha=transparency, col=hcl(h=30,c=100,l=scale[i]), lit=light)}
+        else{rgl::planes3d(a, c, d, e, alpha=transparency, col=color, lit=light)}
       }
     }
     # With point estimates - mean of average simulations across precincts
-    if(estimates==T){spheres3d(means.b,means.w, means.h, col="black", radius=.03, add=T)}
+    if(estimates==T){rgl::spheres3d(means.b,means.w, means.h, col="black", radius=.03, add=T)}
   }
   
   ##With Confidence Elipse
   if(ci==T){  
-    plot3d(ellipse3d(x=rho , scale= c(ses.b,ses.w,ses.h), centre= c(mean(means.b),mean(means.w), mean(means.h))
+    rgl::plot3d(rgl::ellipse3d(x=rho , scale= c(ses.b,ses.w,ses.h), centre= c(mean(means.b),mean(means.w), mean(means.h))
                      , alpha=.8, level=level) ,color=hcl(h=10,c=60,l=20), xlim=c(0,1), ylim=c(0,1), zlim=c(0,1), xlab=yl, ylab=xl, zlab=zl, lit=light)
-    points3d(mean(means.b),mean(means.w), mean(means.h), col="black", size=10, add=T) #Mean of average simulations across precincts
-    points3d(b,w,h, col="black", size=1, add=T)
+    rgl::points3d(mean(means.b),mean(means.w), mean(means.h), col="black", size=10, add=T) #Mean of average simulations across precincts
+    rgl::points3d(b,w,h, col="black", size=1, add=T)
     ##Add the plane for each set of points
     for(i in 1:dim(hstr)[1]){  
       #Two point plane (line)
       if(length(unique(w[i,]))==1 | length(unique(b[i,]))==1 | length(unique(h[i,]))==1){
-        if(lci==T){lines3d(x = b[i,], y = w[i,], z=h[i,], col=hcl(h=30,c=100,l=scale[i],alpha=1))}
-        else{lines3d(x = b[i,], y = w[i,], z=h[i,], col=hcl(h=30,c=100,l=60,alpha=1))}
+        if(lci==T){rgl::lines3d(x = b[i,], y = w[i,], z=h[i,], col=hcl(h=30,c=100,l=scale[i],alpha=1))}
+        else{rgl::lines3d(x = b[i,], y = w[i,], z=h[i,], col=hcl(h=30,c=100,l=60,alpha=1))}
       }else{
         #All Others
         fit <- lm(h[i,] ~ b[i,] + w[i,])
@@ -399,13 +404,13 @@ tomogRxC3d <- function(formula,data,total=NULL,lci=TRUE,estimates=FALSE,ci=FALSE
         c <- coefs[3]
         d <- -1
         e <- coefs["(Intercept)"]
-        if(lci==T){planes3d(a, c, d, e, alpha=.25, col=hcl(h=30,c=100,l=scale[i]), lit=light)}
-        else{planes3d(a, c, d, e, alpha=.25, col=hcl(h=30,c=100,l=60), lit=light)}
+        if(lci==T){rgl::planes3d(a, c, d, e, alpha=.25, col=hcl(h=30,c=100,l=scale[i]), lit=light)}
+        else{rgl::planes3d(a, c, d, e, alpha=.25, col=hcl(h=30,c=100,l=60), lit=light)}
       }
     }
     # With point estimates - mean of average simulations across precincts
-    if(estimates==T){spheres3d(means.b,means.w, means.h, col="black", radius=.03, add=T)}
+    if(estimates==T){rgl::spheres3d(means.b,means.w, means.h, col="black", radius=.03, add=T)}
   }
   
-  if(rotate==T){play3d( spin3d(rpm=2.5), duration=20)}
+  if(rotate==T){rgl::play3d( rgl::spin3d(rpm=2.5), duration=20)}
 }
