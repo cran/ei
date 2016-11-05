@@ -1,9 +1,9 @@
 Package: ei
-Version: 1.3-2
-Date: 2016-03-23
+Version: 1.3-3
+Date: 2016-11-04
 Title: Ecological Inference
 Author: Gary King <king@harvard.edu>, Molly Roberts <molly.e.roberts@gmail.com>
-Maintainer: James Honaker <zelig-zee@iq.harvard.edu>
+Maintainer: James Honaker <zelig.zee@gmail.com>
 Depends: R (>= 2.5.0), eiPack
 Imports: mvtnorm, msm, tmvtnorm, ellipse, plotrix, MASS, ucminf,
         cubature, mnormt, foreach, sp
@@ -13,6 +13,6 @@ License: GPL (>= 2)
 URL: http://gking.harvard.edu/eiR,
         http://gking.harvard.edu/eicamera/kinroot.html
 NeedsCompilation: no
-Packaged: 2016-03-24 03:16:58 UTC; jhonaker
+Packaged: 2016-11-04 22:19:49 UTC; tercer
 Repository: CRAN
-Date/Publication: 2016-03-25 00:43:11
+Date/Publication: 2016-11-05 00:49:10

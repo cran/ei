@@ -1,4 +1,9 @@
+%\VignetteIndexEntry{EI: A(n R) Program for Ecological Inference}
+%\VignetteDepends{eiPack}
 
+
+
+\SweaveOpts{results=hide,prefix.string=vigpics/EI}
 %\include{zinput}
 \documentclass[11pt,oneside,letterpaper,titlepage]{article}
 %\usepackage[notref]{showkeys} % [notref]
@@ -7,7 +12,7 @@
 \usepackage{upquote}
 
 \usepackage[reqno]{amsmath}
-\usepackage{natbib}
+%\usepackage{natbib}
 \usepackage{graphicx
 }
 \usepackage{graphics}
@@ -24,7 +29,7 @@
 \usepackage{verbatim}
 % \usepackage{epsf}
 \usepackage{url}
-\usepackage{html}
+%\usepackage{html}
 \usepackage{dcolumn}
 \usepackage{longtable}
 %\usepackage{vmargin}
@@ -39,14 +44,14 @@
 %\setpapersize{USletter}
 \newcolumntype{.}{D{.}{.}{-1}}
 \newcolumntype{d}[1]{D{.}{.}{#1}}
-%\pagestyle{myheadings}
-\htmladdtonavigation{
-  \htmladdnormallink{%
-    \htmladdimg{http://gking.harvard.edu/pics/home.gif}}
-  {http://gking.harvard.edu/}}
-\newcommand{\hlink}{\htmladdnormallink}
-
-\bodytext{ BACKGROUND="http://gking.harvard.edu/pics/temple.jpg"}
+%\pagestyle{myheadings}  %commented out by JH
+%\htmladdtonavigation{
+%  \htmladdnormallink{%
+%    \htmladdimg{http://gking.harvard.edu/pics/home.gif}}
+%  {http://gking.harvard.edu/}}
+%\newcommand{\hlink}{\htmladdnormallink}
+%
+%\bodytext{ BACKGROUND="http://gking.harvard.edu/pics/temple.jpg"}
 \setcounter{tocdepth}{3}
 
 
@@ -69,6 +74,11 @@
 \maketitle
 \tableofcontents
 
+<<beforepkgs, echo=FALSE>>=
+ before<-search()
+ ind <- grep("[a-z A-Z]+:ei",before)
+ if(!length(ind) > 0) library(ei)
+@
 \include{ei.toc}
 
 \section[Introduction: Ecological Inference]{{\tt Introduction}: Ecological Inference}
@@ -130,15 +140,13 @@ proportion of whites who vote ($ \beta_i^w$), also in each precinct.
 (For an extended example of \verb#eiR#, refer to the user's guide
 below.)  An example of a sequence of these commands are as follows:
 
-\begin{Schunk}
-\begin{Sinput}
-> formula = t ~ x
-> dbuf <- ei(formula=formula, total="n",data=data)
-> summary(dbuf)
-> eiread(dbuf, "betab","betaw")
-> plot(dbuf, "tomog","betab","betaw","xtfit")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+formula = t ~ x
+dbuf <- ei(formula=formula, total="n",data=data)
+summary(dbuf)
+eiread(dbuf, "betab","betaw")
+plot(dbuf, "tomog","betab","betaw","xtfit")
+@
 
 \noindent In most applications, \verb#plot# and \verb#eiread# 
 would likely be run multiple times with different options chosen, and other commands would 
@@ -212,12 +220,10 @@ to vote (\verb#t#).  The proportion of whites registered can be
 computed by (\verb#1-x#). You can load the data into R using the
 command
 
-\begin{Schunk}
-\begin{Sinput}
-> library(ei)
-> data(matproii)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE>>=
+library(ei)
+data(matproii)
+@
 
 \noindent The statistical goal is to estimate the fraction of blacks registered ($\beta_i^b$) and the fraction of whites registered ($\beta_i^w$) in each county. These quantities of interest are generally unknown.  However, \verb#eiR# also includes an option that allows the user to assess the reliability of the \verb#eiR# algorithm when the true quantities of interest are known. To illustrate the use of this ``truth" option, the data also include the true fractions of registered blacks (\verb#tb#) and the true fraction of registered whites (\verb#tw#). 
 
@@ -241,22 +247,18 @@ proceed by performing ecological inference without covariates on the
 data:
 
 %<<echo=TRUE>>=
-\begin{Schunk}
-\begin{Sinput}
-> formula = t ~ x
-> dbuf = ei(formula=formula,total="n",data=matproii)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+formula = t ~ x
+dbuf = ei(formula=formula,total="n",data=matproii)
+@
 
 \noindent To include a covariate on $\beta_i^b$ simply specify a covariate vector for the option \verb#Zb#, or a string that refers to the name of the covariate in the dataset.  Similarly, to include a covariate on $\beta_i^w$, specify a covariate vector for for the option \verb#Zw#, or a string that refers to the name of the covariate in the dataset.\\
 \newline
 Next, we use \verb#summary(dbuf)#and \verb#summary(dbufsim)# to obtain general information about the estimation. 
 
-\begin{Schunk}
-\begin{Sinput}
-> summary(dbuf)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+summary(dbuf)
+@
 
 \begin{verbatim}
 Erho = 0.5 , Esigma = 0.5 , Ebeta = 0.5 , N = 268 , Resamp = 35
@@ -296,11 +298,9 @@ Finally, \verb#summary# produces information on aggregrate quantities of interes
 
 \verb#eiread# extracts quantities of interest in a list format from the object \verb#dbuf#.  For example, 
 
-\begin{Schunk}
-\begin{Sinput}
-> bb.out <- eiread(dbuf, "betab", "sbetab")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+bb.out <- eiread(dbuf, "betab", "sbetab")
+@
 
 \noindent extracts the point estimates and estimated standard deviations for $\beta_i^b$, the estimates of the proportion of registered blacks in each county.  The user can then use \verb#bb.out$betab# to obtain a vector of the point estimates for $\beta_i^b$, and \verb#bb.out$sbetab# to obtain a vector of the standard devations for $\beta_i^b$.  \\
 \newline
@@ -310,14 +310,17 @@ Finally, \verb#summary# produces information on aggregrate quantities of interes
 
 Plotting \verb#EI# output is extremely useful for understanding the results of the ecological inference algorithm and diagnosing problems with estimation.  First, we graph a tomography plot of the data (Figure 1).
 
-\begin{Schunk}
-\begin{Sinput}
-> plot(dbuf, "tomog")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE,eval=FALSE>>=
+plot(dbuf, "tomog")
+@
 
 \begin{figure}[h]
 \begin{center}
+<<results=tex,echo=FALSE, eval=FALSE>>= 
+png("tomogplot.png", width=6, height=6, pointsize=10)
+plot(dbuf, "tomog")
+invisible(dev.off())
+@
 \includegraphics[width=3in, height=3in,   viewport=0 0 420 395,clip]{tomogplot.png} 
 \end{center}
 \caption{Tomography Plot with ML Contours}
@@ -327,6 +330,11 @@ Plotting \verb#EI# output is extremely useful for understanding the results of t
 
 \begin{figure}[h]
 \begin{center}
+<<results=tex,echo=FALSE, eval=FALSE>>= 
+png("tomogplot2.png", width=14, height=6, pointsize=10)
+plot(dbuf, "tomogE", "tomogCI")
+invisible(dev.off())
+@
 \includegraphics[width=7.5in, height=2.5in,   viewport=0 0 1400 395,clip]{tomogplot2.png} 
 \end{center}
 \caption{Tomography Plots: Point Estimates (left) and Confidence
@@ -338,37 +346,36 @@ Plotting \verb#EI# output is extremely useful for understanding the results of t
 \newline
 Figure 2 is a double plot of the point estimates and their confidence intervals.  To compute this, we call plot to generate two graphs: a tomography plot with the point estimates generated from the algorithm, and a tomography plot with 80\% confidence intervals on the point estimate.  
 
-\begin{Schunk}
-\begin{Sinput}
-> plot(dbuf, "tomogE","tomogCI")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE,eval=FALSE>>=
+plot(dbuf, "tomogE","tomogCI")
+@
 
 \noindent This plot is useful to visualize the estimates and confidence intervals for each county.  We can see that the point estimates and confidence intervals are clustered in the same area as the contours from the previous plot.  Further, the point estimates and confidence intervals only fall on the lines that indicate the possible values of $\beta_i^b$ and $\beta_i^w$.\\
 \newline
 Figure 3 shows plots that indicate the distribution of $\beta_i^b$ and $\beta_i^w$. To produce these plots, run:
 
-\begin{Schunk}
-\begin{Sinput}
-> plot(dbuf, "betab","betaw")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE,eval=FALSE>>=
+plot(dbuf, "betab","betaw")
+@
 
 \noindent Density plots are useful to visualize the location and uncertainty of the point estimates.  The green line represents the density of the simulated point estimates, and the black tick marks are a rug plot of the point estimates,s $\beta_i^b$ and $\beta_i^w$.  You can see that the variance of the point estimates from $\beta_i^b$ is much higher than the variance of point estimates from $\beta_i^w$. \\ 
 \newline
 Figure 4 portrays the results of the \verb#EI# algorithm by plotting the proportion of blacks in each country by the proportion of registered voters in each county.  To produce this plot, use:
 
-\begin{Schunk}
-\begin{Sinput}
-> plot(dbuf, "xtfit")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE,eval=FALSE>>=
+plot(dbuf, "xtfit")
+@
 
 \noindent The circles around each of the points in this plot are proportional to the population of each county.  The graph represents the likelihood estimates by plotting the expected number of registered voters given the proportion of blacks in each county, represented by the yellow line. The red lines in the plot are the 80\% confidence interval around the regression line.  The higher uncertainty in the estimates of black registration can be seen by the absence of points on the right hand side of the graph and the larger confidence interval on the right hand side of the graph, where the proportion of blacks in the county is relatively large.  
 
 
 \begin{figure}[h]
 \begin{center}
+<<results=tex,echo=FALSE, eval=FALSE>>= 
+png("betas.png", width=14, height=6, pointsize=10)
+plot(dbuf, "betab", "betaw")
+invisible(dev.off())
+@
 \includegraphics[width=8.5in, height=2.5in,   viewport=0 0 1400 395,clip]{betas.png} 
 \end{center}
 \caption{Plots with Distribution of Point Estimates for $\beta_i^b$
@@ -379,6 +386,11 @@ Figure 4 portrays the results of the \verb#EI# algorithm by plotting the proport
 
 \begin{figure}[h]
 \begin{center}
+<<results=tex,echo=FALSE, eval=FALSE>>= 
+png("xtfit.png", width=6, height=6, pointsize=10)
+plot(dbuf, "xtfit")
+invisible(dev.off())
+@
 \includegraphics[width=2.75in, height=2.75in, viewport=0 0 420 400,clip]{xtfit.png} 
 \end{center}
 \caption{X and T Scatterplot with E(T|X) and 80\% CIs}
@@ -388,28 +400,29 @@ Figure 4 portrays the results of the \verb#EI# algorithm by plotting the proport
 \pagebreak
 \noindent Finally, if we have data on the true proportions of registered blacks and registered whites in each county, as we do in this dataset, we can use plots in \verb#EI# to assess how well the algorithm works on the given data.  To do this, rerun the \verb#ei# algorithm, adding the truth vectors, \verb#tb# and \verb#tw# as the truth argument.
 
-\begin{Schunk}
-\begin{Sinput}
-> truth = cbind(matproii$tb,matproii$tw)
-> formula = t ~ x
-> dbuf = ei(formula=formula,total="n",data=matproii,truth=truth)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+truth = cbind(matproii$tb,matproii$tw)
+formula = t ~ x
+dbuf = ei(formula=formula,total="n",data=matproii,truth=truth)
+@
 
 \noindent Then use plot to compare the estimates of the \verb#EI# algorithm to the true proportions of white and black registered voters in each county.
 
-\begin{Schunk}
-\begin{Sinput}
-> plot(dbuf, "truth")
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+plot(dbuf, "truth")
+@
 
 \noindent The ``truth" plot (Figure 5) has four components.  The top two figures have the posterior densities of the aggregate quantities of interest $B^b$ and $B^w$.  These densities tell us in what range the algorithm predicts that the point estimates lie.  For example, the density of $B^b$ is wider than the density of $B^w$, indicating that our estimates of $B^w$ lie in a smaller range than than our estimates of $B^b$.  The true aggregate values, computed from the \verb#truth# data we inputed, are indicated by the vertical bars.  The fact that the true $B^b$ and $B^w$ are within the densities we computed confirms that the model is did a good job at predicting the true proportions of registered white and black voters.\\
 \newline
 \noindent The bottom two figures in Figure 5 plot the estimated values of $\beta_i^b$ and $\beta_i^w$ against the true values.  The size of each of the circles plotted is proportional to the number of blacks in the county in the first graph and the number of whites in each county in the second graph. If the estimated values were exactly equal to the true values, all of the points would be on the $45^{\circ}$ line.  Because the points fall quite close to the $45^{\circ}$ and do not deviate from the line in a systematic way, we can see that the \verb#EI# algorithm predicts the point estimates quite well.
 
-\begin{figure}[Ht]
+\begin{figure}[ht]
 \begin{center}
+<<results=tex,echo=FALSE, eval=FALSE>>= 
+png("truth2.png", width=6, height=6, pointsize=10)
+plot(dbuf, "truth")
+invisible(dev.off())
+@
 \includegraphics[width=2.75in, height=2.75in, viewport=0 0 420 395,clip]{truth2.png} 
 \end{center}
 \caption{Comparing Estimates to the Truth at the County Level}
@@ -429,35 +442,27 @@ Although the 2x2 case is useful in many circumstances, eiR also allows users to 
 for the 2x3 table: \verb#turnout# is the number of people in each precinct who turned out to vote, \verb#noturnout# is the number of people in each precinct that did not turn out to vote, \verb#white# is the number of people who are white in the precinct, \verb#black# is the number of people who are black in the precinct, and \verb#hisp# is the number of people who are hispanic in the precinct. Note that, different that the 2x2 case, these are the numbers of people rather than proportions.  The user can include proportions if they want to, but then must include the argument \verb#total# for the the total number of people in the precinct. \\
 
 \noindent To begin, we load the RxC data from the \verb#eiR# library.
-\begin{Schunk}
-\begin{Sinput}
-> data(RxCdata)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+data(RxCdata)
+@
 
 The formula for the eiRxC case tells the program which variables go on each side of the table.  In this example, we have turnout and no turnout on one side of the table, and white, black and hispanic on the other side.  Therefore, our formula is:
 
-\begin{Schunk}
-\begin{Sinput}
-> formula <- cbind(turnout, noturnout) ~ cbind(white, black, hisp)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+formula <- cbind(turnout, noturnout) ~ cbind(white, black, hisp)
+@
 
 We can call this formula using ei:
-\begin{Schunk}
-\begin{Sinput}
-> dbuf = ei(formula, data=RxCdata)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+dbuf = ei(formula, data=RxCdata)
+@
 
 The MCMC output for the $\beta$'s can be found in the data buffer \verb#dbuf#.  \verb#dbuf$draws$Beta# is a matrix that contains the simulations for each of the $\beta$'s for each precinct.  Since there are 60 precincts in this dataset and 6 quantities of interest, the number of columns of \verb#dbuf$draws$Beta# is $60*6 = 360$.  We can analyze the MCMC output by picking out which $\beta$ we are interested at any given time.  For example, to look at the MCMC output for the estimated percent white turnout for the third precinct we can use the R code:
 
-\begin{Schunk}
-\begin{Sinput}
-> out <- dbuf$draws$Beta[,"beta.white.turnout.3"]
-> summary(out)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+out <- dbuf$draws$Beta[,"beta.white.turnout.3"]
+summary(out)
+@
 
 \begin{verbatim}
 Iterations = 1:1000
@@ -479,13 +484,11 @@ Sample size per chain = 1000
 \end{verbatim}
 
 We can also plot this MCMC output to assess convergence:
-\begin{Schunk}
-\begin{Sinput}
-> plot(out)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+plot(out)
+@
 
-\begin{figure}[Ht]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics{MCMCplot.png} 
 \end{center}
@@ -520,14 +523,12 @@ RxC model.\\
 \noindent In the 2x3 case, we can do this by using the function
 \verb#tomogRxC#. Following the code above, using the \verb#RxCdata#,
 
-\begin{Schunk}
-\begin{Sinput}
-> formula <- cbind(turnout, noturnout) ~ cbind(white, black, hisp)
-> tomogRxC(formula, RxCdata)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+formula <- cbind(turnout, noturnout) ~ cbind(white, black, hisp)
+tomogRxC(formula, RxCdata)
+@ 
 
-\begin{figure}[Ht]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics{whiteblackRxC.png} 
 \end{center}
@@ -558,14 +559,12 @@ formula, we can create another tomography plot that expores the
 deterministic information for percent white turnout and percent
 hispanic turnout.
 
-\begin{Schunk}
-\begin{Sinput}
-> formula <- cbind(turnout, noturnout) ~ cbind(white, hisp, black)
-> tomogRxC(formula, RxCdata)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+formula <- cbind(turnout, noturnout) ~ cbind(white, hisp, black)
+tomogRxC(formula, RxCdata)
+@ 
 
-\begin{figure}[Ht]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics{whitehispRxC.png} 
 \end{center}
@@ -578,14 +577,12 @@ hispanic turnout.
 \clearpage
 Last, we can plot the remaining two quantities of interest -- percent black turnout and percent hispanic turnout-- against each other:
 
-\begin{Schunk}
-\begin{Sinput}
-> formula <- cbind(turnout, noturnout) ~ cbind(hisp, black, white)
-> tomogRxC(formula, RxCdata)
-\end{Sinput}
-\end{Schunk}
+<<echo=TRUE, eval=FALSE>>=
+formula <- cbind(turnout, noturnout) ~ cbind(hisp, black, white)
+tomogRxC(formula, RxCdata)
+@ 
 
-\begin{figure}[Ht]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics{hispblackRxC.png} 
 \end{center}
